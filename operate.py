@@ -7,7 +7,6 @@ import operator
 
 class Analysisrespondent():
     url = ""
-    sex = ""
     residence = []
     occupation1 = 0
     occupation2 = 0
@@ -22,16 +21,21 @@ class Analysisrespondent():
     occupation11 = 0
     occupation12 = 0
     occupation13 = 0
-    occupation = [occupation1, occupation2, occupation3, occupation4, occupation5, occupation6, occupation7, occupation8,
-                 occupation9, occupation10, occupation11, occupation12, occupation13]
+    occupation = [occupation1, occupation2, occupation3, occupation4, occupation5, occupation6, occupation7,
+                  occupation8,
+                  occupation9, occupation10, occupation11, occupation12, occupation13]
     undergraduate = 0
     highschool = 0
     education = [undergraduate, highschool]
     agree_num = 0
     answers_num = 0
+    occupations_list = []
+    residence_list = []
     unknown = 0
     female = 0
     male = 0
+    sex = [male,female,unknown]
+    proportions_list = []
 
     def __init__(self, url):
 
@@ -42,15 +46,29 @@ class Analysisrespondent():
         answers = question.get_all_answers()
 
         for answer in answers:
-            self.sex = answer.get_author().get_gender()
-            self.agree_num = answer.get_author().get_agree_num()
-            self.answers_num = answer.get_author().get_answers_num()
-            if (self.sex == 'unknown'):
+            author = answer.get_author()
+            sex = author.get_gender()
+            agree_num = author.get_agree_num()
+            answers_num = author.get_answers_num()
+            proportion = [author.get_user_id(),author.user_url,agree_num/answers_num]
+            self.proportions_list.append(proportion)
+            if (sex == 'unknown'):
                 self.unknown += 1
-            elif (self.sex == 'female'):
+            elif (sex == 'female'):
                 self.female += 1
             else:
                 self.male += 1
+            occupation = author.get_occupation
+            if (occupation != 0):
+                self.occupations_list.append(occupation)
+            residence = author.get_residence()
+            if (residence != 0):
+                self.residence_list.append(residence)
+            education = author.get_education()
+            if (education != 0):
+                self.undergraduate += 1
+            else:
+                self.highschool += 1
 
 
 # class Analysisfollower():
