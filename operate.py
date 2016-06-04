@@ -95,6 +95,8 @@ class Findanswer():
     praise = 0
     url = ""
     answers_list = []
+    undergraduate = 0
+    highschool = 0
 
     def __init__(self, sex, residence, occupation, education, praise, url):
 
@@ -242,22 +244,33 @@ class Findanswer():
         answers = question.get_all_answers()
 
         for answer in answers:
+            author = answer.get_author()
             if (self.sex != 0):
-                if (self.sex_text == answer.get_author().get_gender()):
-                    self.answers_list.append(answer.get_author())
+                if (self.sex_text == author.get_gender()):
+                    self.answers_list.append(author)
                 else:
                     continue
-                if (self.occupation != 0):
-                    for occupation in self.occupations_list:
-                        if (occupation == answer.get_author().get_reoccupation()):
-                            break
-                        self.answers_list.pop()
+            if (self.occupation != 0):
+                for occupation in self.occupations_list:
+                    if (occupation == author.get_reoccupation()):
+                        break
+                    self.answers_list.pop()
             if (self.residence == 1):
-                self.residence_list.append(answer.get_author().get_residence())
+                self.residence_list.append(author.get_residence())
+            if (self.education == 1):
+                education = author.get_education()
+                if (education != 0):
+                    self.undergraduate += 1
+                else:
+                    self.highschool += 1
+            if (self.praise == 1):
+                agree_num = author.get_agree_num()
+                answers_num = author.get_answers_num()
 
-        count = Counter(self.residence_list)
-        sorted_x = sorted(count.iteritems(), key=operator.itemgetter(1), reverse=True)
-        print sorted_x[0][0]
+
+        residence_count = Counter(self.residence_list)
+        sorted_residence = sorted(residence_count.iteritems(), key=operator.itemgetter(1), reverse=True)
+        print sorted_residence[0][0]
 
 
 class Findquestion():

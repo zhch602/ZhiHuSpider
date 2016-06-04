@@ -1435,3 +1435,19 @@ class Topic:
                             start = start_list[19]
                         else:
                             return
+
+
+class Explore:
+    url = "https://www.zhihu.com/explore"
+    soup = None
+
+    def parser(self):
+        r = requests.get(self.url)
+        soup = BeautifulSoup(r.content, "lxml")
+        self.soup = soup
+
+    def get_question(self):
+        if self.soup == None:
+            self.parser()
+        soup = self.soup
+        question_list = soup.find_all("div", class_="explore-feed feed-item").h2.a
