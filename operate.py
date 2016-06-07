@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import division
 from zhihu import *
 from collections import Counter
 import operator
@@ -41,34 +42,43 @@ class Analysisrespondent():
 
         self.url = url
 
+    def display(self):
+        print "female:"+str(self.female)+" "+"male:"+str(self.male)
+
     def analysis(self):
         question = Question(self.url)
         answers = question.get_all_answers()
 
         for answer in answers:
             author = answer.get_author()
+            author_id = author.get_user_id()
+            if (author_id.decode('GBK') == "匿名用户"):
+                continue
+            author_url = author.user_url
             sex = author.get_gender()
             agree_num = author.get_agree_num()
             answers_num = author.get_answers_num()
-            proportion = [author.get_user_id(),author.user_url,agree_num/answers_num]
-            self.proportions_list.append(proportion)
+            agree_answers = agree_num/answers_num
+            print agree_answers
+            #proportion = [author.get_user_id(),author.user_url,agree_num/answers_num]
+            #self.proportions_list.append(proportion)
             if (sex == 'unknown'):
                 self.unknown += 1
             elif (sex == 'female'):
                 self.female += 1
             else:
                 self.male += 1
-            occupation = author.get_occupation
-            if (occupation != 0):
-                self.occupations_list.append(occupation)
-            residence = author.get_residence()
-            if (residence != 0):
-                self.residence_list.append(residence)
-            education = author.get_education()
-            if (education != 0):
-                self.undergraduate += 1
-            else:
-                self.highschool += 1
+            #occupation = author.get_occupation
+            #if (occupation != 0):
+            #    self.occupations_list.append(occupation)
+            #residence = author.get_residence()
+            #if (residence != 0):
+            #    self.residence_list.append(residence)
+            #education = author.get_education()
+            #if (education != 0):
+            #    self.undergraduate += 1
+            #else:
+            #    self.highschool += 1
 
 
 # class Analysisfollower():

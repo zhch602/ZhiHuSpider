@@ -124,6 +124,7 @@ class MainDialog(QTabWidget):
         question = self.questionEdit1.text()
         ar = Analysisrespondent(question)
         ar.analysis()
+        ar.display()
         analysisrespondentDialog = AnalysisrespondentDispaly()
         analysisrespondentDialog.exec_()
 
